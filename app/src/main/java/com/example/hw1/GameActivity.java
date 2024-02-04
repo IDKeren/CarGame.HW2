@@ -1,19 +1,18 @@
 package com.example.hw1;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.hw1.Utilities.SignalManager;
 
 import java.util.Random;
 
@@ -21,44 +20,50 @@ public class GameActivity extends AppCompatActivity {
 
     private static final int ROWS = 6;
     private static final int COLS = 3;
-    private ImageView[] heart;
+    private final ImageView[] heart = new ImageView[3];
     private final ImageView[][] gameMatrix = new ImageView[ROWS][COLS];
-
     private final ImageView[][] rockMatrix = new ImageView[ROWS][COLS];
     private int lives = 3;
-
-    private static int curScore = 0;
-    private static TextView scoreTextView ;
+    private TextView scoreTextView ;
     private int currentColumn = 1;
+    private int curScore = 0;
     private static final int DELAY = 1400;
     private static final int ROCK = R.drawable.rock;
     private static final int CAR_IMAGE = R.drawable.car;
 
     Random random = new Random();
+
     private Handler delayHandler = new Handler();
 
+    private Button leftArrowButton;
+    private Button rightArrowButton;
 
-    @SuppressLint({"MissingInflatedId", "DiscouragedApi"})
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViews();
         setGameMatrix();
+        startScoreTimer();
 
 
-        heart = new ImageView[3];
-        Button leftArrowButton = findViewById(R.id.leftArrowButton);
-        Button rightArrowButton = findViewById(R.id.rightArrowButton);
+        leftArrowButton.setOnClickListener(View -> moveCarLeft());
+        rightArrowButton.setOnClickListener(View -> moveCarRight());
+
+
+        delayHandler.postDelayed(runnable, DELAY);
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private void findViews(){
+        leftArrowButton = findViewById(R.id.leftArrowButton);
+        rightArrowButton = findViewById(R.id.rightArrowButton);
+        scoreTextView = findViewById(R.id.score);
 
         for (int i = 0; i < 3; i++) {
             heart[i] = findViewById(getResources().getIdentifier("heart" + (i + 1), "id", getPackageName()));
         }
-
-        leftArrowButton.setOnClickListener(View -> moveCarLeft());
-        rightArrowButton.setOnClickListener(View -> moveCarRight());
-        scoreTextView = findViewById(R.id.score);
-        delayHandler.postDelayed(runnable, DELAY);
-        startScoreTimer();
     }
 
     private void spawnRocks() {
@@ -66,6 +71,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void randomRocks() {
+        // Generate random rocks
         int i = random.nextInt(3);
         if (rockMatrix[0][i].getDrawable() == null) {
             rockMatrix[0][i].setImageResource(ROCK);
@@ -73,19 +79,22 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                moveRocks();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            delayHandler.postDelayed(this, DELAY);
-        spawnRocks();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    moveRocks();
+                    delayHandler.postDelayed(this, DELAY);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
-        }
-    };
+                spawnRocks();
+
+            }
+        };
+
+
 
     private void moveRocks() throws InterruptedException {
         // Move rocks downward
@@ -111,6 +120,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void moveCarLeft() {
+        // Move the car left only if it's not at the leftmost column
         if (currentColumn != 0) {
 
             moveCar(currentColumn - 1);
@@ -147,11 +157,9 @@ public class GameActivity extends AppCompatActivity {
         // Reduce lives
         lives--;
         // Show a toast message
-        Toast.makeText(this, "Collision! Lives remaining: " + lives, Toast.LENGTH_SHORT).show();
-        // Vibrate the device
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+        SignalManager.getInstance().toast("Collision! Lives remaining: " + lives);
+        // Vibrate the device for 500 milliseconds
+        SignalManager.getInstance().vibrate(500);
         // Update the UI with remaining lives
         updateLivesUI();
         // Check for game over
@@ -171,14 +179,15 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void startScoreTimer() {
+    private void startScoreTimer()  {
         Handler scoreHandler = new Handler();
+
         scoreHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Increment the score and update the TextView
-                curScore++;
-                scoreTextView.setText("Score: " + curScore);
+                    // Increment the score and update the TextView
+                    curScore++;
+                    scoreTextView.setText("Score: " + curScore);
 
                 // Call this runnable again after a delay (e.g., 1000 milliseconds for 1 second)
                 scoreHandler.postDelayed(this, 1000);
@@ -186,16 +195,23 @@ public class GameActivity extends AppCompatActivity {
         }, 1000); // Start the timer after 1 second
     }
 
-    private void gameOver() {
-        // Display game over message and handle game over actions
-        Toast.makeText(this, "Game Over!", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this,MainActivity.class);
+    @Override
+    protected void onStop() {
+        super.onStop();
         delayHandler.removeCallbacks(runnable);
         delayHandler.removeCallbacksAndMessages(null);
-        runnable = null;
-        delayHandler = null;
-        startActivity(intent);
 
+
+
+    }
+
+    private void gameOver() {
+        // Display game over message and handle game over actions
+        SignalManager.getInstance().toast("Game Over!");
+        Intent intent = new Intent(this,MainActivity.class);
+
+        startActivity(intent);
+        finish();
 
     }
 
