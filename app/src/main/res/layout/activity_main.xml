@@ -29,7 +29,6 @@
             android:id="@+id/heart1"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/heart" />
 
@@ -57,7 +56,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:layout_above="@id/leftArrowButton"
-
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -71,40 +69,40 @@
 
             <ImageView
                 android:id="@+id/row1_col1"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row2_col1"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row3_col1"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row4_col1"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row5_col1"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
@@ -129,40 +127,40 @@
 
             <ImageView
                 android:id="@+id/row1_col2"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row2_col2"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row3_col2"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row4_col2"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row5_col2"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
@@ -170,10 +168,9 @@
             <ImageView
                 android:id="@+id/row6_col2"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/car"
                 tools:ignore="ContentDescription" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -188,48 +185,166 @@
 
             <ImageView
                 android:id="@+id/row1_col3"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row2_col3"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row3_col3"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row4_col3"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/row5_col3"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row6_col3"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                app:srcCompat="@drawable/car"
+                tools:ignore="ContentDescription" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/road4"
+            android:layout_width="150dp"
+            android:layout_height="560dp"
+            android:layout_weight="1"
+            android:background="@drawable/road"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/row1_col4"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
                 android:rotation="180"
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
             <ImageView
-                android:id="@+id/row6_col3"
-                android:layout_width="120dp"
-                android:layout_height="10dp"
+                android:id="@+id/row2_col4"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row3_col4"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row4_col4"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row5_col4"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row6_col4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/road5"
+            android:layout_width="150dp"
+            android:layout_height="560dp"
+            android:layout_weight="1"
+            android:background="@drawable/road"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/row1_col5"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row2_col5"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row3_col5"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row4_col5"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row5_col5"
+                android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:rotation="180"
+                android:layout_weight="1"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row6_col5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:rotation="180"
                 tools:ignore="ContentDescription" />

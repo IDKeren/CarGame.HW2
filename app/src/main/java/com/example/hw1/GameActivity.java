@@ -2,6 +2,8 @@ package com.example.hw1;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -16,25 +18,27 @@ import com.example.hw1.Utilities.SignalManager;
 
 import java.util.Random;
 
+import javax.sql.RowSet;
+
 public class GameActivity extends AppCompatActivity {
 
     private static final int ROWS = 6;
-    private static final int COLS = 3;
+    private static final int COLS = 5;
     private final ImageView[] heart = new ImageView[3];
     private final ImageView[][] gameMatrix = new ImageView[ROWS][COLS];
-    private final ImageView[][] rockMatrix = new ImageView[ROWS][COLS];
+    private final ImageView[][] drawableMatrix = new ImageView[ROWS][COLS];
+    private int[][] coinMatrix = new int[ROWS][COLS];
     private int lives = 3;
     private TextView scoreTextView ;
-    private int currentColumn = 1;
+    private int currentColumn = 2;
     private int curScore = 0;
-    private static final int DELAY = 1400;
+    private static int DELAY = 0;
+    private static final int DEFAULT_DELAY_VALUE = 100;
     private static final int ROCK = R.drawable.rock;
     private static final int CAR_IMAGE = R.drawable.car;
-
+    private static final int COIN = R.drawable.coin;
     Random random = new Random();
-
     private Handler delayHandler = new Handler();
-
     private Button leftArrowButton;
     private Button rightArrowButton;
 
@@ -42,6 +46,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         findViews();
         setGameMatrix();
@@ -50,7 +55,7 @@ public class GameActivity extends AppCompatActivity {
 
         leftArrowButton.setOnClickListener(View -> moveCarLeft());
         rightArrowButton.setOnClickListener(View -> moveCarRight());
-
+        DELAY = getIntent().getIntExtra("DELAY_KEY",DEFAULT_DELAY_VALUE);
 
         delayHandler.postDelayed(runnable, DELAY);
     }
@@ -70,12 +75,26 @@ public class GameActivity extends AppCompatActivity {
         delayHandler.postDelayed(this::randomRocks, DELAY);
     }
 
+    private void spawnCoins() {
+        delayHandler.postDelayed(this::randomCoins, DELAY);
+    }
+    @SuppressLint("ResourceType")
     private void randomRocks() {
         // Generate random rocks
-        int i = random.nextInt(3);
-        if (rockMatrix[0][i].getDrawable() == null) {
-            rockMatrix[0][i].setImageResource(ROCK);
+        int i = random.nextInt(5);
+        if (drawableMatrix[0][i].getDrawable() == null) {
+            drawableMatrix[0][i].setImageResource(ROCK);
+            coinMatrix[0][i] = 2;
+        }
+    }
 
+    @SuppressLint("ResourceType")
+    private void randomCoins() {
+        // Generate random rocks
+        int i = random.nextInt(5);
+        if (drawableMatrix[0][i].getDrawable() == null) {
+            drawableMatrix[0][i].setImageResource(COIN);
+            coinMatrix[0][i] = 1;
         }
     }
 
@@ -83,62 +102,75 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    moveRocks();
+                    moveRocksWithCoins();
                     delayHandler.postDelayed(this, DELAY);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
 
                 spawnRocks();
+                spawnCoins();
 
             }
         };
 
 
 
-    private void moveRocks() throws InterruptedException {
+    @SuppressLint("ResourceType")
+    private void moveRocksWithCoins() throws InterruptedException {
         // Move rocks downward
 
         for (int i = ROWS - 2; i >= 0; i--) {
             for (int j = 0; j < COLS; j++) {
-                if (rockMatrix[i][j].getDrawable() != null) {
-                    rockMatrix[i + 1][j].setImageDrawable(rockMatrix[i][j].getDrawable());
-                    rockMatrix[i][j].setImageResource(0);
+                if (drawableMatrix[i][j].getDrawable() != null && coinMatrix[i][j] != 0 ) {
+                    if (coinMatrix[i][j] == 2) {
+                        coinMatrix[i + 1][j] = 2;
+                    } else {
+                        coinMatrix[i + 1][j] = 1;
+                    }
+                    drawableMatrix[i + 1][j].setImageDrawable(drawableMatrix[i][j].getDrawable());
+                    drawableMatrix[i][j].setImageDrawable(null);
+                    coinMatrix[i][j] = 0;
 
-                    if (i + 1 == ROWS - 1 && (gameMatrix[ROWS - 1][j].getDrawable() != null) ) {
+                    if (i + 1 == ROWS - 1 && (gameMatrix[ROWS - 1][j].getDrawable() != null)) {
+
+                        if (coinMatrix[ROWS - 1][currentColumn] == 2) {
+                            handleCollision();
+                            gameMatrix[ROWS - 1][currentColumn].setImageResource(CAR_IMAGE);
+                            coinMatrix[ROWS - 1][j] = 0;
+                        }
+                        if (coinMatrix[ROWS - 1][currentColumn] == 1) {
+                            curScore = curScore + 10;
+                            gameMatrix[ROWS - 1][currentColumn].setImageResource(CAR_IMAGE);
+                            coinMatrix[ROWS - 1][j] = 0;
+                        }
                         // Rock reached the bottom, remove it
-                        rockMatrix[ROWS - 1][j].setImageDrawable(null);
-                    }if(gameMatrix[ROWS - 1][currentColumn].getDrawable() == rockMatrix[i + 1][j].getDrawable()){
-                        handleCollision();
+                        drawableMatrix[ROWS - 1][j].setImageDrawable(null);
                         gameMatrix[ROWS - 1][currentColumn].setImageResource(CAR_IMAGE);
                     }
-
                 }
-            }
 
+            }
         }
     }
+
 
     private void moveCarLeft() {
         // Move the car left only if it's not at the leftmost column
         if (currentColumn != 0) {
-
             moveCar(currentColumn - 1);
-
         }
     }
 
     private void moveCarRight() {
         // Move the car right only if it's not at the rightmost column
         if (currentColumn != COLS - 1) {
-
             moveCar(currentColumn + 1);
         }
     }
 
     private void moveCar(int newCol) {
-        gameMatrix[ROWS - 1][currentColumn].setImageResource(0);
-
+        gameMatrix[ROWS - 1][currentColumn].setImageDrawable(null);
         gameMatrix[ROWS - 1][newCol].setImageResource(CAR_IMAGE);
         currentColumn = newCol;
     }
@@ -147,7 +179,8 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 gameMatrix[i][j] = findViewById(R.id.row1_col1 + (i * COLS) + j);
-                rockMatrix[i][j] = findViewById(R.id.row1_col1 + (i * COLS) + j);
+                drawableMatrix[i][j] = findViewById(R.id.row1_col1 + (i * COLS) + j);
+
             }
         }
     }
