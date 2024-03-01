@@ -115,6 +115,30 @@
                 android:rotation="180"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:id="@+id/row7_col1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row8_col1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row9_col1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -173,6 +197,30 @@
                 android:layout_weight="1"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:id="@+id/row7_col2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row8_col2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row9_col2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -227,6 +275,30 @@
             <ImageView
                 android:id="@+id/row6_col3"
                 android:layout_width="80dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row7_col3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row8_col3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row9_col3"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:rotation="180"
@@ -291,6 +363,30 @@
                 android:rotation="180"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:id="@+id/row7_col4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row8_col4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row9_col4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -349,6 +445,30 @@
                 android:rotation="180"
                 tools:ignore="ContentDescription" />
 
+            <ImageView
+                android:id="@+id/row7_col5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row8_col5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/row9_col5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:rotation="180"
+                tools:ignore="ContentDescription" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -381,6 +501,8 @@
         android:backgroundTint="#F44336"
         android:contentDescription="@android:string/VideoView_error_button"
         app:icon="@drawable/arrow" />
+
+
 
 
 </RelativeLayout>

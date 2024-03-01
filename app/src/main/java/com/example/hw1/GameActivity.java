@@ -1,11 +1,12 @@
 package com.example.hw1;
 
+
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,20 +15,27 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hw1.Interface.StepCallback;
+import com.example.hw1.Models.LeaderBoardList;
+import com.example.hw1.Models.Player;
+import com.example.hw1.Utilities.BackgroundSound;
+import com.example.hw1.Utilities.SharedPreferencesManager;
 import com.example.hw1.Utilities.SignalManager;
+import com.example.hw1.Utilities.StepDetector;
+import com.google.gson.Gson;
 
 import java.util.Random;
 
-import javax.sql.RowSet;
+
 
 public class GameActivity extends AppCompatActivity {
 
-    private static final int ROWS = 6;
+    private static final int ROWS = 9;
     private static final int COLS = 5;
     private final ImageView[] heart = new ImageView[3];
     private final ImageView[][] gameMatrix = new ImageView[ROWS][COLS];
     private final ImageView[][] drawableMatrix = new ImageView[ROWS][COLS];
-    private int[][] coinMatrix = new int[ROWS][COLS];
+    private final int[][] coinMatrix = new int[ROWS][COLS];
     private int lives = 3;
     private TextView scoreTextView ;
     private int currentColumn = 2;
@@ -38,20 +46,26 @@ public class GameActivity extends AppCompatActivity {
     private static final int CAR_IMAGE = R.drawable.car;
     private static final int COIN = R.drawable.coin;
     Random random = new Random();
-    private Handler delayHandler = new Handler();
+    private final Handler delayHandler = new Handler();
     private Button leftArrowButton;
     private Button rightArrowButton;
-
+    private StepDetector stepDetector;
+    private BackgroundSound backgroundSound;
+    private Player newPlayer;
+    private SharedPreferencesManager sharedPreferencesManager;
+    private LeaderBoardList leaderboardList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         findViews();
         setGameMatrix();
         startScoreTimer();
-
+        newPlayer = new Player();
+        sharedPreferencesManager = SharedPreferencesManager.getInstance();
+        leaderboardList = sharedPreferencesManager.getLeaderboardList("LEADERBOARDLIST");
+        backgroundSound = new BackgroundSound(this,R.raw.car_crash);
 
         leftArrowButton.setOnClickListener(View -> moveCarLeft());
         rightArrowButton.setOnClickListener(View -> moveCarRight());
@@ -65,6 +79,7 @@ public class GameActivity extends AppCompatActivity {
         leftArrowButton = findViewById(R.id.leftArrowButton);
         rightArrowButton = findViewById(R.id.rightArrowButton);
         scoreTextView = findViewById(R.id.score);
+
 
         for (int i = 0; i < 3; i++) {
             heart[i] = findViewById(getResources().getIdentifier("heart" + (i + 1), "id", getPackageName()));
@@ -132,26 +147,43 @@ public class GameActivity extends AppCompatActivity {
                     drawableMatrix[i][j].setImageDrawable(null);
                     coinMatrix[i][j] = 0;
 
-                    if (i + 1 == ROWS - 1 && (gameMatrix[ROWS - 1][j].getDrawable() != null)) {
+                    if (i + 1 == ROWS - 1 && (gameMatrix[ROWS - 1][j].getDrawable() != null) ) {
+                        // Drawable reached the bottom, remove it
+                        drawableMatrix[ROWS - 1][j].setImageDrawable(null);
 
-                        if (coinMatrix[ROWS - 1][currentColumn] == 2) {
+                        gameMatrix[ROWS - 1][currentColumn].setImageResource(CAR_IMAGE);
+
+                        if (coinMatrix[ROWS - 1][currentColumn] == 2  ) {
                             handleCollision();
                             gameMatrix[ROWS - 1][currentColumn].setImageResource(CAR_IMAGE);
-                            coinMatrix[ROWS - 1][j] = 0;
+
                         }
-                        if (coinMatrix[ROWS - 1][currentColumn] == 1) {
+                        if (coinMatrix[ROWS - 1][currentColumn] == 1 ) {
+
                             curScore = curScore + 10;
                             gameMatrix[ROWS - 1][currentColumn].setImageResource(CAR_IMAGE);
-                            coinMatrix[ROWS - 1][j] = 0;
                         }
-                        // Rock reached the bottom, remove it
-                        drawableMatrix[ROWS - 1][j].setImageDrawable(null);
-                        gameMatrix[ROWS - 1][currentColumn].setImageResource(CAR_IMAGE);
+                        coinMatrix[ROWS - 1][j] = 0;
+
                     }
                 }
 
             }
         }
+    }
+
+    private void initStepDetector() {
+        stepDetector = new StepDetector(this, new StepCallback() {
+            @Override
+            public void stepX() {
+                rightArrowButton.setText(String.valueOf(stepDetector.getStepCountX()));
+            }
+
+            @Override
+            public void stepY() {
+                leftArrowButton.setText(String.valueOf(stepDetector.getStepCountY()));
+            }
+        });
     }
 
 
@@ -171,6 +203,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void moveCar(int newCol) {
         gameMatrix[ROWS - 1][currentColumn].setImageDrawable(null);
+        coinMatrix[ROWS - 1][currentColumn] = 0;
         gameMatrix[ROWS - 1][newCol].setImageResource(CAR_IMAGE);
         currentColumn = newCol;
     }
@@ -187,6 +220,7 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void handleCollision() {
+        backgroundSound.playSound();
         // Reduce lives
         lives--;
         // Show a toast message
@@ -199,6 +233,7 @@ public class GameActivity extends AppCompatActivity {
         if (lives == 0) {
             gameOver();
         }
+
     }
 
     private void updateLivesUI() {
@@ -216,6 +251,7 @@ public class GameActivity extends AppCompatActivity {
         Handler scoreHandler = new Handler();
 
         scoreHandler.postDelayed(new Runnable() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
                     // Increment the score and update the TextView
@@ -228,19 +264,30 @@ public class GameActivity extends AppCompatActivity {
         }, 1000); // Start the timer after 1 second
     }
 
+
+
+
     @Override
     protected void onStop() {
         super.onStop();
         delayHandler.removeCallbacks(runnable);
         delayHandler.removeCallbacksAndMessages(null);
 
+    }
 
-
+    private Player setValuseToPlayer(Player newPlayer){
+        newPlayer.setLocation("");
+        newPlayer.setScore(curScore);
+        newPlayer.setName(getIntent().getStringExtra("PLAYER_NAME"));
+        return newPlayer;
     }
 
     private void gameOver() {
         // Display game over message and handle game over actions
         SignalManager.getInstance().toast("Game Over!");
+        setValuseToPlayer(newPlayer);
+        leaderboardList.addPlayer(newPlayer);
+        sharedPreferencesManager.putLeaderboardList("LEADERBOARDLIST", leaderboardList);
         Intent intent = new Intent(this,MainActivity.class);
 
         startActivity(intent);

@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".Menu"/>
         <activity android:name=".GameActivity" />
+        <activity android:name=".LeaderBoard" />
     </application>
 
 </manifest>
