@@ -14,4 +14,6 @@ whats new:
    choose your mode and then choose the level.
    after 3 collisions you get back to the main menu to start over.
 
+   I added a video that shows how to play - "CarGameRecord.mp4"
+
    I didnt have enough time to implement the map with the records of the locations.
