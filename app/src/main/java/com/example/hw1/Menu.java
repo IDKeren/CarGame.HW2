@@ -1,4 +1,6 @@
 package com.example.hw1;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -6,8 +8,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.hw1.Models.Player;
 import com.example.hw1.Utilities.BackgroundSound;
 
 public class Menu extends AppCompatActivity {
@@ -18,6 +18,7 @@ public class Menu extends AppCompatActivity {
     private BackgroundSound backgroundSound;
     private EditText playerName;
     private EditText chooseGameMODEText;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch modeSwitch;
     private boolean mode = false;
 
@@ -86,9 +87,7 @@ public class Menu extends AppCompatActivity {
         playerName.setText("");
     }
 
-    private void changeGameMode(boolean mode){
 
-    }
 
     @Override
     protected void onResume() {

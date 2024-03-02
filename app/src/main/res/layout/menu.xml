@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:backgroundTint="#FFEB3B"
+            android:textSize="20sp"
             android:text="Slow"
             android:textColor="#000000" />
 
@@ -52,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#F44336"
+            android:textSize="20sp"
             android:text="Fast"
             android:textColor="#000000" />
 
@@ -73,15 +75,18 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:inputType="text"
+            android:textSize="18sp"
             android:text="Choose Game MODE "
-            android:textColor="#000000"
+            android:textColor="#FDFBFB"
             android:textStyle="bold" />
 
         <Switch
             android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Buttons"
+            android:text="Sensors"
+            android:textSize="20sp"
+            android:textColor="#FDFBFB"
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -104,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:backgroundTint="#FF9800"
+            android:textSize="20sp"
             android:text="Leaderboard"
             android:textColor="#000000" />
 
@@ -128,6 +134,7 @@
             android:layout_below="@id/leaderBoardButton"
             android:layout_centerHorizontal="true"
             android:backgroundTint="#00BCD4"
+            android:textSize="20sp"
             android:text="Exit"
             android:textColor="#000000" />
     </androidx.appcompat.widget.LinearLayoutCompat>

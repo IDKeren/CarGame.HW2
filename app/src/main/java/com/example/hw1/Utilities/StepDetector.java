@@ -14,24 +14,24 @@ public class StepDetector {
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
 
-    private int stepCountX = 0;
-    private int stepCountY = 0;
+    private float stepCountX = 0;
+    private float stepCountY = 0;
     private long timestamp = 0l;
 
     private StepCallback stepCallback;
 
     public StepDetector(Context context, StepCallback stepCallback) {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         this.stepCallback = stepCallback;
         initEventListener();
     }
 
-    public int getStepCountX() {
+    public float getStepCountX() {
         return stepCountX;
     }
 
-    public int getStepCountY() {
+    public float getStepCountY() {
         return stepCountY;
     }
 
@@ -41,7 +41,9 @@ public class StepDetector {
             public void onSensorChanged(SensorEvent event) {
                 float x = event.values[0];
                 float y = event.values[1];
-                calculateStep(x, y);
+                if (stepCallback != null) {
+                    stepCallback.onDeviceTilt(x, y);
+                }
             }
 
             @Override
@@ -51,21 +53,6 @@ public class StepDetector {
         };
     }
 
-    private void calculateStep(float x, float y) {
-        if (System.currentTimeMillis() - timestamp > 500) {
-            timestamp = System.currentTimeMillis();
-            if (x > 6.0) {
-                stepCountX++;
-                if (stepCallback != null)
-                    stepCallback.stepX();
-            }
-            if (y > 6.0) {
-                stepCountY++;
-                if (stepCallback != null)
-                    stepCallback.stepY();
-            }
-        }
-    }
 
     public void start(){
         sensorManager.registerListener(

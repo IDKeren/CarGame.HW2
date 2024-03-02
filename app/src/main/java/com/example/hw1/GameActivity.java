@@ -24,6 +24,7 @@ import com.example.hw1.Utilities.SignalManager;
 import com.example.hw1.Utilities.StepDetector;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
 
@@ -52,10 +53,10 @@ public class GameActivity extends AppCompatActivity {
     private Button rightArrowButton;
     private StepDetector stepDetector;
     private BackgroundSound backgroundSound;
-    private Player newPlayer = new Player();
+    private final Player newPlayer = new Player();
     private SharedPreferencesManager sharedPreferencesManager;
     private LeaderBoardList leaderboardList;
-
+    private boolean mode;
     private Date date;
 
     @Override
@@ -65,14 +66,15 @@ public class GameActivity extends AppCompatActivity {
         findViews();
         setGameMatrix();
         startScoreTimer();
+        initStepDetector();
+        detectGameMode();
         sharedPreferencesManager = SharedPreferencesManager.getInstance();
         leaderboardList = sharedPreferencesManager.getLeaderboardList("LEADERBOARDLIST");
         leaderboardList = initLeaderboardList();
 
         backgroundSound = new BackgroundSound(this,R.raw.car_crash);
 
-        leftArrowButton.setOnClickListener(View -> moveCarLeft());
-        rightArrowButton.setOnClickListener(View -> moveCarRight());
+
         DELAY = getIntent().getIntExtra("DELAY_KEY",DEFAULT_DELAY_VALUE);
 
         delayHandler.postDelayed(runnable, DELAY);
@@ -177,17 +179,35 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initStepDetector() {
-        stepDetector = new StepDetector(this, new StepCallback() {
-            @Override
-            public void stepX() {
-                rightArrowButton.setText(String.valueOf(stepDetector.getStepCountX()));
-            }
 
-            @Override
-            public void stepY() {
-                leftArrowButton.setText(String.valueOf(stepDetector.getStepCountY()));
-            }
-        });
+        mode = getIntent().getBooleanExtra("MODE",mode);
+        if(mode){
+            leftArrowButton.setVisibility(View.INVISIBLE);
+            rightArrowButton.setVisibility(View.INVISIBLE);
+
+            stepDetector = new StepDetector(this, (tiltAngleX, tiltAngleY) -> {
+
+                if (tiltAngleX > 10.0f || tiltAngleY > 0.0f) {
+                    // Tilted right, move car right
+                    moveCarRight();
+                } else if (tiltAngleX < -10.0f  || tiltAngleY < 0.0f) {
+                    // Tilted left, move car left
+                    moveCarLeft();
+                }
+            });
+
+
+        }else{
+            leftArrowButton.setOnClickListener(View -> moveCarLeft());
+            rightArrowButton.setOnClickListener(View -> moveCarRight());
+        }
+
+    }
+
+    private void detectGameMode(){
+        if(mode){
+            stepDetector.start();
+        }
     }
 
     private LeaderBoardList initLeaderboardList(){
@@ -199,7 +219,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-    private void moveCarLeft() {
+     void moveCarLeft() {
         // Move the car left only if it's not at the leftmost column
         if (currentColumn != 0) {
             moveCar(currentColumn - 1);
@@ -284,6 +304,7 @@ public class GameActivity extends AppCompatActivity {
         super.onStop();
         delayHandler.removeCallbacks(runnable);
         delayHandler.removeCallbacksAndMessages(null);
+
 
     }
 

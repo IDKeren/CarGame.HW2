@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/leaderBoardLayout"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
@@ -17,7 +17,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/leader_board_text_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Leader Board"
             android:textColor="@color/black"
             android:textSize="24sp"
@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:backgroundTint="#00BCD4"
+            android:textSize="20sp"
             android:text="Back"
             android:textColor="#000000" />
     </androidx.appcompat.widget.LinearLayoutCompat>

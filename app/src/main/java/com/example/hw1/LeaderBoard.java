@@ -2,19 +2,14 @@ package com.example.hw1;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.hw1.Models.Player;
-import com.google.gson.Gson;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.hw1.Models.LeaderBoardList;
 import com.example.hw1.Utilities.SharedPreferencesManager;
-
 import java.util.ArrayList;
-import java.util.List;
+
 
 
 public class LeaderBoard extends AppCompatActivity {
@@ -43,7 +38,7 @@ public class LeaderBoard extends AppCompatActivity {
         ArrayList<Player> players = leaderboardList.getPLayersArrayList();
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            leaderboardText.append(i + 1).append(". ").append(player.getName()).append(": ").append(player.getScore()).append(player.getDate()).append("\n");
+            leaderboardText.append(i + 1).append(". ").append(player.getName()).append(": ").append("Score " + player.getScore()+ " ").append(player.getDate()).append("\n");
         }
     }else {
         leaderboardText.append("Leaderboard is empty.");

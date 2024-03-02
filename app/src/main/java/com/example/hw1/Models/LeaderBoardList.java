@@ -13,15 +13,6 @@ public class LeaderBoardList {
     public LeaderBoardList() {
     }
 
-    public String getName() {
-
-        return name;
-    }
-
-    public LeaderBoardList setName(String name) {
-        this.name = name;
-        return this;
-    }
 
     public ArrayList<Player> getPLayersArrayList() {
 
@@ -38,7 +29,9 @@ public class LeaderBoardList {
             playerArrayList.add(player);
             Collections.sort(playerArrayList, Comparator.comparingInt(Player::getScore).reversed());
             if (playerArrayList.size() > 10) {
-                playerArrayList = (ArrayList<Player>) playerArrayList.subList(0, 10); // Keep only top 10 players
+                ArrayList<Player> topPlayers = new ArrayList<>(playerArrayList.subList(0, 10)); // Keep only top 10 players
+                playerArrayList.clear(); // Clear the original list
+                playerArrayList.addAll(topPlayers); // Add the top 10 players back to the original list
             }
         }else{
             Log.d("Player is null","Player is null" );
