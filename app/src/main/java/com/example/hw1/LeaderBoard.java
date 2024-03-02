@@ -18,7 +18,7 @@ import java.util.List;
 
 
 public class LeaderBoard extends AppCompatActivity {
-    public static final String LEADERBOARDLIST = "LEADERBOARDLIST";
+
     private Button backButton;
     private TextView leaderBoardTextView ;
     private SharedPreferencesManager sharedPreferencesManager;
@@ -30,7 +30,9 @@ public class LeaderBoard extends AppCompatActivity {
         findViews();
         setOnClickListners();
         sharedPreferencesManager = SharedPreferencesManager.getInstance();
-        leaderboardList = sharedPreferencesManager.getLeaderboardList(LEADERBOARDLIST);
+
+        leaderboardList = sharedPreferencesManager.getLeaderboardList("LEADERBOARDLIST");
+
         displayLeaderBoard();
 
     }
@@ -41,13 +43,14 @@ public class LeaderBoard extends AppCompatActivity {
         ArrayList<Player> players = leaderboardList.getPLayersArrayList();
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            leaderboardText.append(i + 1).append(". ").append(player.getName()).append(": ").append(player.getScore()).append("\n");
+            leaderboardText.append(i + 1).append(". ").append(player.getName()).append(": ").append(player.getScore()).append(player.getDate()).append("\n");
         }
     }else {
         leaderboardText.append("Leaderboard is empty.");
     }
         leaderBoardTextView.setText(leaderboardText.toString());
     }
+
 
 
     private void findViews(){

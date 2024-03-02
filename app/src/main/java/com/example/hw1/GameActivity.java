@@ -22,8 +22,9 @@ import com.example.hw1.Utilities.BackgroundSound;
 import com.example.hw1.Utilities.SharedPreferencesManager;
 import com.example.hw1.Utilities.SignalManager;
 import com.example.hw1.Utilities.StepDetector;
-import com.google.gson.Gson;
 
+
+import java.util.Date;
 import java.util.Random;
 
 
@@ -51,9 +52,11 @@ public class GameActivity extends AppCompatActivity {
     private Button rightArrowButton;
     private StepDetector stepDetector;
     private BackgroundSound backgroundSound;
-    private Player newPlayer;
+    private Player newPlayer = new Player();
     private SharedPreferencesManager sharedPreferencesManager;
     private LeaderBoardList leaderboardList;
+
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +65,10 @@ public class GameActivity extends AppCompatActivity {
         findViews();
         setGameMatrix();
         startScoreTimer();
-        newPlayer = new Player();
         sharedPreferencesManager = SharedPreferencesManager.getInstance();
         leaderboardList = sharedPreferencesManager.getLeaderboardList("LEADERBOARDLIST");
+        leaderboardList = initLeaderboardList();
+
         backgroundSound = new BackgroundSound(this,R.raw.car_crash);
 
         leftArrowButton.setOnClickListener(View -> moveCarLeft());
@@ -113,21 +117,21 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    moveRocksWithCoins();
-                    delayHandler.postDelayed(this, DELAY);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                spawnRocks();
-                spawnCoins();
-
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                moveRocksWithCoins();
+                delayHandler.postDelayed(this, DELAY);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        };
+
+            spawnRocks();
+            spawnCoins();
+
+        }
+    };
 
 
 
@@ -184,6 +188,14 @@ public class GameActivity extends AppCompatActivity {
                 leftArrowButton.setText(String.valueOf(stepDetector.getStepCountY()));
             }
         });
+    }
+
+    private LeaderBoardList initLeaderboardList(){
+
+        if(leaderboardList == null) {
+            leaderboardList = new LeaderBoardList();
+        }
+        return leaderboardList;
     }
 
 
@@ -254,9 +266,9 @@ public class GameActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
-                    // Increment the score and update the TextView
-                    curScore++;
-                    scoreTextView.setText("Score: " + curScore);
+                // Increment the score and update the TextView
+                curScore++;
+                scoreTextView.setText("Score: " + curScore);
 
                 // Call this runnable again after a delay (e.g., 1000 milliseconds for 1 second)
                 scoreHandler.postDelayed(this, 1000);
@@ -275,17 +287,19 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    private Player setValuseToPlayer(Player newPlayer){
+    private void setValueToPlayer(Player newPlayer){
         newPlayer.setLocation("");
         newPlayer.setScore(curScore);
         newPlayer.setName(getIntent().getStringExtra("PLAYER_NAME"));
-        return newPlayer;
+        newPlayer.setDate(date);
+
     }
 
     private void gameOver() {
         // Display game over message and handle game over actions
         SignalManager.getInstance().toast("Game Over!");
-        setValuseToPlayer(newPlayer);
+        setValueToPlayer(newPlayer);
+
         leaderboardList.addPlayer(newPlayer);
         sharedPreferencesManager.putLeaderboardList("LEADERBOARDLIST", leaderboardList);
         Intent intent = new Intent(this,MainActivity.class);

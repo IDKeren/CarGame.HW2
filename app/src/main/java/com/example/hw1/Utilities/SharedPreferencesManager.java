@@ -10,7 +10,7 @@ public class SharedPreferencesManager {
 
     private static volatile SharedPreferencesManager instance = null;
     private static final String DB_FILE = "DB_FILE";
-    private SharedPreferences sharedPref;
+    private final SharedPreferences sharedPref;
 
     private SharedPreferencesManager(Context context) {
         this.sharedPref = context.getSharedPreferences(DB_FILE, Context.MODE_PRIVATE);

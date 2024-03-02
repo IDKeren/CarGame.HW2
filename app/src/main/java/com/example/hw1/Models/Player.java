@@ -1,10 +1,14 @@
 package com.example.hw1.Models;
 
+import java.util.Date;
+
 public class Player {
 
     private String name = "";
     private int score = 0;
     private String location = "";
+
+    private Date date = new Date();
 
     public Player() {
     }
@@ -29,14 +33,21 @@ public class Player {
         return score;
     }
 
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     @Override
     public String toString() {
         return "Player{" +
                 "name='" + name + '\'' +
                 ", score=" + score +
-                ", location=" + location +
+                ", location='" + location + '\'' +
+                ", date=" + date +
                 '}';
     }
 }

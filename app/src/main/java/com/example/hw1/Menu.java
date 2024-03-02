@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,9 @@ public class Menu extends AppCompatActivity {
     private Button leaderBoardButton;
     private BackgroundSound backgroundSound;
     private EditText playerName;
+    private EditText chooseGameMODEText;
+    private Switch modeSwitch;
+    private boolean mode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class Menu extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("PLAYER_NAME",name);
         intent.putExtra("DELAY_KEY",delay);
+        intent.putExtra("MODE",mode);
         startActivity(intent);
         finish();
     }
@@ -51,6 +56,8 @@ public class Menu extends AppCompatActivity {
         slowButton = findViewById(R.id.slowButton);
         exitButton = findViewById(R.id.exitButton);
         leaderBoardButton = findViewById(R.id.leaderBoardButton);
+        modeSwitch = findViewById(R.id.switch1);
+        chooseGameMODEText = findViewById(R.id.chooseGameMODEText);
         playerName = findViewById(R.id.nameEditText);
     }
 
@@ -64,6 +71,8 @@ public class Menu extends AppCompatActivity {
         // Set an OnClickListener for the "Leader Board" button
         leaderBoardButton.setOnClickListener(View -> startLeaderBoardActivity());
 
+        modeSwitch.setOnClickListener(View -> mode = true);
+
         // Set an OnClickListener for the "Player name to clear the initial text"
         playerName.setOnClickListener(View -> clearText(playerName));
 
@@ -75,6 +84,10 @@ public class Menu extends AppCompatActivity {
 
     private void clearText(EditText playerName){
         playerName.setText("");
+    }
+
+    private void changeGameMode(boolean mode){
+
     }
 
     @Override

@@ -13,7 +13,7 @@
         android:id="@+id/heartsLayout"
         android:layout_width="500dp"
         android:layout_height="40dp"
-       >
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/score"
